@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Portal | Dr. Muhammad Naeem Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .admin-body {
+      background-color: #f1f5f9;
+      min-height: 100vh;
+    }
+    
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-card {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+      max-width: 440px;
+      width: 100%;
+      border: 1px solid var(--border-color);
+    }
+
+    .admin-header {
+      background: var(--primary-dark);
+      color: #ffffff;
+      padding: 18px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-md);
+    }
+
+    .admin-nav {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .admin-tab-btn {
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: #94a3b8;
+      background: transparent;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+
+    .admin-tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .admin-container {
+      max-width: 1240px;
+      margin: 36px auto;
+      padding: 0 24px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      padding: 22px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted-text);
+      margin-bottom: 8px;
+    }
+
+    .stat-card .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .admin-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      padding: 28px;
+      margin-bottom: 30px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .data-table th, .data-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .data-table th {
+      background: var(--light-bg);
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-new {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-contacted {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-right: 4px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-wa { background: #25d366; color: white; }
+    .btn-call { background: var(--primary-light); color: var(--primary); }
+    .btn-edit { background: #e0f2fe; color: #0369a1; }
+    .btn-delete { background: #fee2e2; color: #991b1b; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Admin Login Screen -->
+  <div class="login-wrapper" id="loginScreen">
+    <div class="login-card">
+      <div style="text-align: center; margin-bottom: 28px;">
+        <span class="brand-mark" style="margin: 0 auto 14px;">
+          <svg viewBox="0 0 40 40" fill="none" class="brand-logo" aria-hidden="true">
+            <path d="M20 3.5l13.5 4.8v9.7c0 8.5-5.7 14.2-13.5 18.5-7.8-4.3-13.5-10-13.5-18.5V8.3L20 3.5z" stroke="currentColor" stroke-width="1.7"></path>
+            <path d="M20 11v11M14.5 16.5h11" stroke="currentColor" stroke-width="2.4"></path>
+          </svg>
+        </span>
+        <h2 style="font-size: 1.6rem; color: var(--primary-dark); font-weight: 800;">Dr. Naeem Clinic Admin</h2>
+        <p style="color: var(--muted-text); font-size: 0.9rem; margin-top: 4px;">Sign in to manage appointments, blogs & users</p>
+      </div>
+
+      <form id="adminLoginForm">
+        <label>
+          Username
+          <input type="text" id="adminUsername" placeholder="Username (default: admin)" required />
+        </label>
+
+        <label style="margin-top: 14px;">
+          Password
+          <input type="password" id="adminPassword" placeholder="Password (default: admin123)" required />
+        </label>
+
+        <div id="loginError" style="color: #dc2626; font-size: 0.85rem; display: none; margin-top: 8px;">Incorrect username or password. Try again!</div>
+        
+        <button type="submit" class="button" style="width: 100%; margin-top: 20px;">
+          Login to Dashboard &rarr;
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="index.html" class="text-link" style="font-size: 0.85rem;">&larr; Return to main website</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard Screen (Hidden until logged in) -->
+  <div id="adminDashboard" style="display: none;">
+    <header class="admin-header">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <span class="brand-mark" style="width: 36px; height: 36px;">
+          <svg viewBox="0 0 40 40" fill="none" class="brand-logo"><path d="M20 3.5l13.5 4.8v9.7c0 8.5-5.7 14.2-13.5 18.5-7.8-4.3-13.5-10-13.5-18.5V8.3L20 3.5z" stroke="currentColor" stroke-width="1.7"></path></svg>
+        </span>
+        <div>
+          <strong style="font-size: 1.1rem; display: block;">Dr. Muhammad Naeem Admin Portal</strong>
+          <small style="color: #94a3b8; font-size: 0.75rem;">Welcome back, <span id="currentAdminName">Admin</span></small>
+        </div>
+      </div>
+
+      <div class="admin-nav">
+        <button class="admin-tab-btn active" id="tabAppointmentsBtn">
+          Appointments (<span id="unreadApptBadge">0</span>)
+        </button>
+        <button class="admin-tab-btn" id="tabBlogBtn">
+          Blog Manager
+        </button>
+        <button class="admin-tab-btn" id="tabUsersBtn">
+          User Manager
+        </button>
+        <a href="index.html" target="_blank" class="button button-secondary" style="padding: 8px 16px; font-size: 0.85rem;">
+          View Website &nearr;
+        </a>
+        <button id="logoutBtn" class="button" style="background: #ef4444; padding: 8px 16px; font-size: 0.85rem; border: none;">
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-container">
+      <!-- Quick Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <h4>Total Appointment Inquiries</h4>
+          <div class="stat-number" id="statTotalAppts">0</div>
+        </div>
+        <div class="stat-card">
+          <h4>New / Uncontacted</h4>
+          <div class="stat-number" id="statNewAppts" style="color: #d97706;">0</div>
+        </div>
+        <div class="stat-card">
+          <h4>Published Articles</h4>
+          <div class="stat-number" id="statTotalBlogs" style="color: var(--primary);">3</div>
+        </div>
+        <div class="stat-card">
+          <h4>Admin System Users</h4>
+          <div class="stat-number" id="statTotalUsers" style="color: #0284c7;">1</div>
+        </div>
+      </div>
+
+      <!-- Tab 1: Appointments Manager -->
+      <div class="tab-content active" id="appointmentsTab">
+        <div class="admin-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
+            <div>
+              <h3 style="font-size: 1.3rem; color: var(--primary-dark); font-weight: 800;">Patient Appointment Queries</h3>
+              <p style="color: var(--muted-text); font-size: 0.875rem;">Messages submitted by patients through the website booking form.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button id="exportCsvBtn" class="button button-secondary" style="padding: 8px 14px; font-size: 0.85rem;">
+                📥 Export to CSV
+              </button>
+              <button id="clearAllApptsBtn" class="button" style="background: #fee2e2; color: #991b1b; padding: 8px 14px; font-size: 0.85rem; border: none;">
+                🗑️ Clear All
+              </button>
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Patient Name</th>
+                  <th>Contact Number</th>
+                  <th>Hospital</th>
+                  <th>Procedure / Concern</th>
+                  <th>Requested Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="appointmentsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Blog Manager -->
+      <div class="tab-content" id="blogTab">
+        <div class="admin-card">
+          <h3 style="font-size: 1.3rem; color: var(--primary-dark); font-weight: 800; margin-bottom: 6px;">Add New Daily Blog Article</h3>
+          <p style="color: var(--muted-text); font-size: 0.875rem; margin-bottom: 24px;">Publish educational articles for your patients daily. Articles appear immediately on the website!</p>
+
+          <form id="newBlogForm">
+            <div class="form-row">
+              <label>
+                Article Title
+                <input placeholder="e.g. Early Signs of Thyroid Swelling" id="blogTitle" required />
+              </label>
+              <label>
+                Category
+                <select id="blogCategory" required>
+                  <option value="Thyroid Care">Thyroid Care</option>
+                  <option value="Breast Cancer">Breast Cancer</option>
+                  <option value="General Surgery">General Surgery</option>
+                  <option value="Patient Advice">Patient Advice</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Short Excerpt / Summary
+              <input placeholder="A brief 1-2 sentence summary for the homepage card..." id="blogExcerpt" required />
+            </label>
+
+            <label>
+              Full Article Content
+              <textarea placeholder="Write full medical article content here..." id="blogContent" rows="5" required></textarea>
+            </label>
+
+            <button type="submit" class="button" style="width: auto; align-self: flex-start;">
+              🚀 Publish Article Now
+            </button>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h3 style="font-size: 1.3rem; color: var(--primary-dark); font-weight: 800; margin-bottom: 16px;">Published Blog Articles</h3>
+          
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date Published</th>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Excerpt</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="blogsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: User Management -->
+      <div class="tab-content" id="usersTab">
+        <div class="admin-card">
+          <h3 style="font-size: 1.3rem; color: var(--primary-dark); font-weight: 800; margin-bottom: 6px;">Add New Admin / Staff User</h3>
+          <p style="color: var(--muted-text); font-size: 0.875rem; margin-bottom: 24px;">Create access credentials for doctors, nurses, or clinic assistants.</p>
+
+          <form id="newUserForm">
+            <div class="form-row">
+              <label>
+                Full Name
+                <input placeholder="e.g. Dr. Muhammad Naeem" id="userFullName" required />
+              </label>
+              <label>
+                Username
+                <input placeholder="e.g. drnaeem" id="userUsername" required />
+              </label>
+            </div>
+
+            <div class="form-row">
+              <label>
+                Password
+                <input type="password" placeholder="Set user password" id="userPassword" required />
+              </label>
+              <label>
+                Role
+                <select id="userRole" required>
+                  <option value="Super Admin">Super Admin</option>
+                  <option value="Doctor">Doctor</option>
+                  <option value="Receptionist">Receptionist</option>
+                  <option value="Assistant">Assistant</option>
+                </select>
+              </label>
+            </div>
+
+            <button type="submit" class="button" style="width: auto; align-self: flex-start;">
+              👤 Add Admin User
+            </button>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h3 style="font-size: 1.3rem; color: var(--primary-dark); font-weight: 800; margin-bottom: 16px;">System Users List</h3>
+          
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Full Name</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>Date Added</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Edit Blog Modal -->
+  <div class="modal-backdrop" id="editBlogModal">
+    <div class="modal-container" style="max-width: 650px;">
+      <button class="modal-close" id="editBlogModalClose">&times;</button>
+      <div class="modal-body">
+        <h2 style="font-size: 1.5rem; color: var(--primary-dark); font-weight: 800; margin-bottom: 18px;">Edit Blog Article</h2>
+        <form id="editBlogForm">
+          <input type="hidden" id="editBlogId" />
+          <label>
+            Article Title
+            <input id="editBlogTitle" required />
+          </label>
+          <label>
+            Category
+            <select id="editBlogCategory" required>
+              <option value="Thyroid Care">Thyroid Care</option>
+              <option value="Breast Cancer">Breast Cancer</option>
+              <option value="General Surgery">General Surgery</option>
+              <option value="Patient Advice">Patient Advice</option>
+            </select>
+          </label>
+          <label>
+            Excerpt
+            <input id="editBlogExcerpt" required />
+          </label>
+          <label>
+            Content
+            <textarea id="editBlogContent" rows="6" required></textarea>
+          </label>
+          <button type="submit" class="button" style="width: 100%; margin-top: 14px;">💾 Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <div class="modal-backdrop" id="editUserModal">
+    <div class="modal-container" style="max-width: 550px;">
+      <button class="modal-close" id="editUserModalClose">&times;</button>
+      <div class="modal-body">
+        <h2 style="font-size: 1.5rem; color: var(--primary-dark); font-weight: 800; margin-bottom: 18px;">Edit Admin User</h2>
+        <form id="editUserForm">
+          <input type="hidden" id="editUserId" />
+          <label>
+            Full Name
+            <input id="editUserFullName" required />
+          </label>
+          <label>
+            Username
+            <input id="editUserUsername" required />
+          </label>
+          <label>
+            Password (Leave blank to keep current password)
+            <input type="password" id="editUserPassword" placeholder="Enter new password or leave empty" />
+          </label>
+          <label>
+            Role
+            <select id="editUserRole" required>
+              <option value="Super Admin">Super Admin</option>
+              <option value="Doctor">Doctor</option>
+              <option value="Receptionist">Receptionist</option>
+              <option value="Assistant">Assistant</option>
+            </select>
+          </label>
+          <button type="submit" class="button" style="width: 100%; margin-top: 14px;">💾 Save User Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginScreen = document.getElementById('loginScreen');
+      const adminDashboard = document.getElementById('adminDashboard');
+      const loginForm = document.getElementById('adminLoginForm');
+      const usernameInput = document.getElementById('adminUsername');
+      const passwordInput = document.getElementById('adminPassword');
+      const loginError = document.getElementById('loginError');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const currentAdminName = document.getElementById('currentAdminName');
+
+      // Check login state
+      const loggedUser = sessionStorage.getItem('naeem_admin_logged_user');
+      if (loggedUser) {
+        loginScreen.style.display = 'none';
+        adminDashboard.style.display = 'block';
+        if (currentAdminName) currentAdminName.textContent = loggedUser;
+        if (window.renderAdminDashboard) window.renderAdminDashboard();
+      }
+
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const userVal = usernameInput.value.trim();
+        const pwdVal = passwordInput.value.trim();
+        
+        // Get user accounts
+        const users = window.getAdminUsers ? window.getAdminUsers() : [];
+        const match = users.find(u => u.username.toLowerCase() === userVal.toLowerCase() && u.password === pwdVal);
+        
+        if (match) {
+          sessionStorage.setItem('naeem_admin_logged_user', match.fullName);
+          loginScreen.style.display = 'none';
+          adminDashboard.style.display = 'block';
+          loginError.style.display = 'none';
+          if (currentAdminName) currentAdminName.textContent = match.fullName;
+          if (window.renderAdminDashboard) window.renderAdminDashboard();
+        } else {
+          loginError.style.display = 'block';
+        }
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem('naeem_admin_logged_user');
+        adminDashboard.style.display = 'none';
+        loginScreen.style.display = 'flex';
+        usernameInput.value = '';
+        passwordInput.value = '';
+      });
+
+      // Tab switchers
+      const tabApptsBtn = document.getElementById('tabAppointmentsBtn');
+      const tabBlogBtn = document.getElementById('tabBlogBtn');
+      const tabUsersBtn = document.getElementById('tabUsersBtn');
+      
+      const apptsTab = document.getElementById('appointmentsTab');
+      const blogTab = document.getElementById('blogTab');
+      const usersTab = document.getElementById('usersTab');
+
+      const switchTab = (activeBtn, activeTab) => {
+        [tabApptsBtn, tabBlogBtn, tabUsersBtn].forEach(b => b.classList.remove('active'));
+        [apptsTab, blogTab, usersTab].forEach(t => t.classList.remove('active'));
+        
+        activeBtn.classList.add('active');
+        activeTab.classList.add('active');
+      };
+
+      tabApptsBtn.addEventListener('click', () => switchTab(tabApptsBtn, apptsTab));
+      tabBlogBtn.addEventListener('click', () => switchTab(tabBlogBtn, blogTab));
+      tabUsersBtn.addEventListener('click', () => switchTab(tabUsersBtn, usersTab));
+    });
+  </script>
+</body>
+</html>
