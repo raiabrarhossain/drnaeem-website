@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
 💰 *Consultation Fee:* Rs. ${Number(appt.feeRupees || 2000).toLocaleString()}
 💳 *Payment Status:* ${appt.paymentStatus === 'Paid' ? 'PAID ✅' : 'Payable at Counter ⏳'}
 ══════════════════════════════════
-⏱️ *رابطہ کا وقت:* ہماری ٹیم 2 گھنٹے کے اندر آپ سے رابطہ کرے گی (Contact within 2 hours).
+⏱️ *رابطہ کا وقت:* 2 گھنٹے میں رابطہ کرتے ہیں آپ سے (Contact within 2 hours).
 ⚠️ *IMPORTANT INSTRUCTIONS FOR PATIENT:*
 1. Please arrive at the reception desk 15 minutes before your time slot.
 2. Present this digital slip at the reception desk to confirm your queue number.
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
           
           <!-- 2-Hour Contact Banner in Noori Nastaliq Urdu -->
           <div class="urdu-contact-banner">
-            ہم 2 گھنٹے کے اندر آپ سے رابطہ کریں گے
+            2 گھنٹے میں رابطہ کرتے ہیں آپ سے
             <div style="font-family: var(--font-sans); font-size: 0.8rem; color: #0d5c56; direction: ltr; margin-top: 2px; font-weight: 600;">
               Our reception will contact you within 2 hours to confirm your consultation slot.
             </div>
@@ -395,6 +395,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // General Article / Confirmation Modal Close Handlers
+  const articleModalEl = document.getElementById('articleModal');
+  const modalCloseBtn = document.getElementById('modalClose');
+  if (modalCloseBtn && articleModalEl) {
+    modalCloseBtn.addEventListener('click', () => {
+      articleModalEl.classList.remove('open');
+    });
+  }
+  if (articleModalEl) {
+    articleModalEl.addEventListener('click', (e) => {
+      if (e.target === articleModalEl) {
+        articleModalEl.classList.remove('open');
+      }
+    });
+  }
+
   // =========================================================================
   // 3. MAIN WEBSITE APPOINTMENT REGISTRATION FORM HANDLER
   // =========================================================================
@@ -457,8 +473,54 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem('naeem_patient_session');
       window.checkHeaderLoginStatus();
 
-      // Show the official interactive Appointment Token Slip
-      window.showAppointmentSlip(newAppt);
+      // Show confirmation modal as requested (with WhatsApp & Call buttons removed, showing 2 گھنٹے میں رابطہ کرتے ہیں آپ سے)
+      const articleModal = document.getElementById('articleModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalMeta = document.getElementById('modalMeta');
+      const modalBody = document.getElementById('modalBody');
+
+      const isUr = (localStorage.getItem('site_lang') || 'en') === 'ur';
+
+      if (modalTitle) {
+        modalTitle.textContent = isUr ? 'آپ کی درخواست موصول ہو گئی ہے' : 'Inquiry Submitted Successfully';
+      }
+      if (modalMeta) {
+        modalMeta.textContent = isUr ? 'ہم جلد آپ سے رابطہ کریں گے' : 'We will reach out to confirm your slot shortly.';
+      }
+
+      if (modalBody) {
+        modalBody.innerHTML = `
+          <div class="success-modal">
+            <div class="success-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <p style="margin-bottom: 20px; font-size: 1.05rem; line-height: 1.6;">
+              ${isUr 
+                ? `شکریہ <strong>${name}</strong> ! <strong>${hospital}</strong> کے لیے آپ کی اپائنٹمنٹ کی درخواست برائے تاریخ <strong>${date}</strong> موصول ہو چکی ہے۔` 
+                : `Thank you ${name} ! Your consultation request for <strong>${hospital}</strong> on <strong>${date}</strong> has been received.`
+              }
+            </p>
+            
+            <!-- 2-Hour Contact Notice in Noori Nastaliq Urdu (Replaces WhatsApp & Call buttons) -->
+            <div class="urdu-contact-banner" style="margin: 24px auto 14px; max-width: 500px; padding: 16px 20px; font-size: 1.5rem; line-height: 2.2;">
+              <div style="font-family: var(--font-urdu), 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif; direction: rtl; color: #072e2b;">
+                2 گھنٹے میں رابطہ کرتے ہیں آپ سے
+              </div>
+              <div style="font-family: var(--font-sans); font-size: 0.85rem; color: #0d5c56; direction: ltr; margin-top: 4px; font-weight: 600;">
+                We will reach out to contact you within 2 hours
+              </div>
+            </div>
+
+            <div style="margin-top: 18px; text-align: center;">
+              <button type="button" class="button button-secondary" style="padding: 9px 26px; font-size: 0.9rem; border-radius: 8px;" onclick="document.getElementById('articleModal').classList.remove('open');">
+                ${isUr ? 'ٹھیک ہے / بند کریں' : 'OK / Close'}
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      if (articleModal) articleModal.classList.add('open');
       appointmentForm.reset();
 
       if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
