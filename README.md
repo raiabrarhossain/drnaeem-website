@@ -56,8 +56,11 @@ Doctor website/
 ├── styles.css                  # Design System, Responsive Layout & Printable Slip Styles
 ├── script.js                   # Application Logic, Persistence, Queue & WhatsApp Dispatcher
 ├── images/
-│   ├── dr-naeem.png            # Consultant Surgeon Profile Photo
-│   └── hero.png                # Hero Banner
+│   ├── dr-naeem-blue-suit.jpg  # Hero Section & Primary Executive Portrait
+│   ├── dr-naeem-clinic.jpg     # Clinical OPD Consultation Desk (In Doctor's Lab Coat)
+│   ├── dr-naeem-black-suit.jpg # Specialist Formal Portrait (Trust & Gallery)
+│   ├── dr-naeem.png            # Legacy Portrait
+│   └── hero.png                # Legacy Illustration
 ├── blog/
 │   ├── index.html              # Patient Articles Listing
 │   ├── thyroid-nodules-when-to-worry.html
