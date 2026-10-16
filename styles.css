@@ -835,8 +835,8 @@ body[data-lang="ur"] .service-card::before {
 /* Hospital Locations */
 .locations-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 26px;
 }
 
 .location-card {

@@ -1,0 +1,123 @@
+================================================================================
+DR. MUHAMMAD NAEEM - CLINIC MANAGEMENT SOFTWARE
+QUESTIONS & TESTING INSTRUCTIONS FOR DOCTOR
+================================================================================
+
+Respected Dr. Muhammad Naeem,
+
+We have developed and updated your specialized Medical Practice Website & Clinic 
+Management Portal. The software is live, connected to your GitHub repository, 
+and ready for your review and daily use.
+
+Please review the testing instructions below and kindly answer the questions at 
+the bottom so we can tailor the software to your exact clinical workflow.
+
+================================================================================
+SECTION 1: HOW TO TEST & USE THE SOFTWARE RIGHT NOW
+================================================================================
+
+1. CLINIC LOCATIONS CONFIGURED (NOW 3 LOCATIONS):
+   • Location 1: Kardaar Hospital (Plot No 5, Kohinoor City Madina Town, Faisalabad)
+     - Configured OPD: Monday to Thursday (4:00 PM - 7:00 PM)
+   • Location 2: Faisal Hospital (673-A Lower Canal Rd E, People's Colony No 1, Faisalabad)
+     - Configured OPD: Friday & Saturday (6:00 PM - 9:00 PM)
+   • Location 3: Yashfeen Clinic (Muslim Town No. 1, Gate No. 2, Muslim Town Market, 
+     Near Rehman Masjid, Sargodha Road, Faisalabad)
+     - Configured OPD: Sunday / By Appointment (11:00 AM - 2:00 PM)
+
+2. TWO SEPARATE LOGIN ROLES:
+   Open "admin.html" or click "Login" on the website header:
+
+   A) 🩺 DOCTOR / SUPER ADMIN LOGIN:
+      - Username: admin
+      - Password: admin123
+      - What Doctor Can Do:
+        * Change OPD schedule days, hours, and consultation fees in Rupees anytime
+        * View all patient bookings across all 3 hospitals
+        * View financial earnings: Total Rupees Collected vs Pending Consultation Fees
+        * Post broadcast announcements (e.g., "Doctor in OT until 5:00 PM")
+        * Search patient medical history directory
+        * Create and manage receptionist staff accounts
+        * Publish daily educational health articles for patients
+
+   B) 📋 RECEPTION DESK LOGIN:
+      - Username: receptionist
+      - Password: recep123
+      - What Receptionist Can Do:
+        * Register walk-in or phone-call patients in 30 seconds
+        * View today's live OPD queue with 1-click status updates:
+          [⏳ Waiting in Lobby] ➔ [🩺 Inside with Doctor] ➔ [✅ Completed]
+        * Collect consultation fees in Rupees (Cash / JazzCash / EasyPaisa / Bank)
+        * Print official clinical token slips for patients at the counter
+        * 1-Click "Send Slip to WhatsApp" with complete patient details & fees!
+
+3. WHATSAPP TOKEN SLIP DISPATCH:
+   When an appointment is booked or viewed at the reception desk, clicking
+   "📲 Send Slip to WhatsApp" automatically opens WhatsApp with a pre-filled,
+   professional slip including:
+   - Doctor Name & Specialty
+   - Unique Token / Slip Number (e.g., #SLIP-4821)
+   - Patient Name, Age, Gender, City, and Phone
+   - Hospital Name & Exact Address with Google Maps link
+   - Date & Assigned 30-minute Time Slot
+   - Consultation Fee in Rupees (e.g., Rs. 2,000) & Payment Status
+   - Pre-consultation instructions (bring ultrasound/biopsy reports)
+
+
+================================================================================
+SECTION 2: QUESTIONS FOR DR. MUHAMMAD NAEEM (WHAT MORE TO ADD?)
+================================================================================
+
+Doctor Sahib, please review the following questions and let us know your 
+preferences so we can add them to the system:
+
+1. OPD TIMINGS & DAYS FOR EACH HOSPITAL:
+   - Are the current days and timings accurate for all 3 clinics?
+     * Kardaar Hospital: Mon–Thu (4:00 PM – 7:00 PM)?
+     * Faisal Hospital: Fri–Sat (6:00 PM – 9:00 PM)?
+     * Yashfeen Clinic: Sunday (11:00 AM – 2:00 PM) or different days/hours?
+   - Would you like each slot to be 20 minutes, 30 minutes, or walk-in queue numbers?
+
+2. CONSULTATION FEES (IN RUPEES):
+   - Currently set to:
+     * Standard Initial Consultation: Rs. 2,000
+     * Follow-up Consultation: Rs. 1,500
+     * Emergency / Priority Consultation: Rs. 3,000
+   - Are these fees correct, or are there different fees for Kardaar vs Faisal vs Yashfeen?
+
+3. DIGITAL PRESCRIPTION (E-Rx) GENERATOR:
+   - Would you like a built-in prescription pad where you can select common medicines,
+     dosages, lab investigation advice, and print an official Dr. Naeem prescription 
+     or send it directly to the patient's WhatsApp as a digital Rx?
+
+4. PATIENT REPORTS & ULTRASOUND/MAMMOGRAPHY ATTACHMENTS:
+   - Would you like patients and receptionists to be able to upload PDF or image 
+     files of their ultrasound reports, blood tests, FNAC/biopsy results, or CT scans 
+     directly into their patient record?
+
+5. SURGERY & OPERATION THEATRE (OT) PLANNER:
+   - As a Consultant Surgeon, would you like a dedicated "Surgeries & OT Module" 
+     to track upcoming surgical cases (e.g., Modified Radical Mastectomy, Thyroidectomy,
+     Laparoscopic Cholecystectomy, Hernioplasty) with planned date, hospital OT, 
+     anesthesia notes, and post-op follow-up schedule?
+
+6. STAFF & RECEPTIONIST ACCOUNTS:
+   - Would you like us to set up individual logins for specific receptionist names 
+     at Kardaar Hospital, Faisal Hospital, and Yashfeen Clinic with their own passwords?
+
+7. AUTOMATED SMS / WHATSAPP REMINDERS:
+   - Currently, WhatsApp slips are sent with 1-click by the receptionist. Would you 
+     also like automated SMS / WhatsApp reminders sent 2 hours before the appointment?
+
+8. URDU LANGUAGE & PATIENT EDUCATION:
+   - The website has full English and Urdu switching. Are there specific surgical 
+     procedures or patient advice topics you would like highlighted in Urdu?
+
+================================================================================
+HOW TO RESPOND:
+You can simply type your answers, reply via WhatsApp, or mark your choices on 
+this document. We will implement your requested additions immediately!
+
+Clinic Helpline: 03007991099
+Software Version: 2.0 (Bilingual, Dual-Role, 3-Hospital Enabled)
+================================================================================

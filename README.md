@@ -25,12 +25,16 @@ A modern, responsive, high-performance medical website and clinic management por
    - One-click interactive toggle switches between English and Urdu with native RTL (Right-to-Left) typography.
 
 4. **Hospital Affiliations**:
-   - Interactive location cards and Google Maps integration for:
+   - Interactive location cards and Google Maps integration for 3 prime practice locations:
      - **Kardaar Hospital**: Mon-Thu 4:00 PM - 7:00 PM (Plot No 5, Kohinoor City Madina Town, Faisalabad)
      - **Faisal Hospital**: Fri-Sat 6:00 PM - 9:00 PM (673-A Lower Canal Rd E, People's Colony No 1, Faisalabad)
+     - **Yashfeen Clinic**: Sunday / By Appointment 11:00 AM - 2:00 PM (Muslim Town No. 1, Gate No. 2, Sargodha Road, Faisalabad)
 
 5. **Patient Portal**:
    - Patients can sign in with their contact number to view their upcoming consultation slots and digital token slips.
+
+6. **Doctor Questionnaire & Instructions**:
+   - Included `DOCTOR_QUESTIONS_AND_INSTRUCTIONS.txt` for Dr. Muhammad Naeem to review features and provide customization feedback.
 
 ---
 
@@ -60,6 +64,7 @@ Doctor website/
 │   ├── preparing-for-surgery-patients-guide.html
 │   └── understanding-breast-cancer-early-signs.html
 ├── .gitignore
+├── DOCTOR_QUESTIONS_AND_INSTRUCTIONS.txt # Questions & Testing Instructions for Dr. Naeem
 └── README.md
 ```
 
@@ -74,7 +79,7 @@ The repository is linked to GitHub:
 To sync and push changes:
 ```bash
 git add .
-git commit -m "Add dual-role login (Admin & Receptionist), patient appointment registration, schedule manager, and WhatsApp slip in rupees"
+git commit -m "Add Yashfeen Clinic (3rd hospital) and doctor question instruction text file"
 git push origin main
 ```
 
@@ -83,4 +88,7 @@ git push origin main
 ## 📞 Contact Information
 - **Doctor**: Dr. Muhammad Naeem (Consultant Surgeon)
 - **Phone / WhatsApp**: `03007991099` (+923007991099)
-- **Locations**: Kardaar Hospital & Faisal Hospital, Faisalabad, Punjab
+- **Locations**:
+  1. Kardaar Hospital (Kohinoor City, Madina Town, Faisalabad)
+  2. Faisal Hospital (Lower Canal Road, People's Colony, Faisalabad)
+  3. Yashfeen Clinic (Muslim Town No. 1, Gate No. 2, Sargodha Road, Faisalabad)

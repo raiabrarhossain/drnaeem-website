@@ -31,6 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
         days: 'Friday & Saturday',
         timings: '6:00 PM - 9:00 PM',
         address: "673-A Lower Canal Rd E, Block A People's Colony No 1, Faisalabad"
+      },
+      yashfeen: {
+        days: 'Sunday / By Appointment',
+        timings: '11:00 AM - 2:00 PM',
+        address: 'Muslim Town No. 1, Gate No. 2, Muslim Town Market, Near Rehman Masjid, Sargodha Road, Faisalabad'
       }
     };
     localStorage.setItem('naeem_doctor_schedule', JSON.stringify(defaultSchedule));
@@ -245,7 +250,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.formatWhatsAppMessage = (appt) => {
     const sched = window.getDoctorSchedule();
-    const hospAddress = appt.hospital.includes('Faisal') ? sched.faisal.address : sched.kardaar.address;
+    let hospAddress = sched.kardaar ? sched.kardaar.address : 'Plot No 5, Kohinoor City Madina Town, Faisalabad';
+    if (appt.hospital && appt.hospital.includes('Faisal')) {
+      hospAddress = sched.faisal ? sched.faisal.address : "673-A Lower Canal Rd E, Block A People's Colony No 1, Faisalabad";
+    } else if (appt.hospital && appt.hospital.includes('Yashfeen')) {
+      hospAddress = (sched.yashfeen && sched.yashfeen.address) ? sched.yashfeen.address : 'Muslim Town No. 1, Gate No. 2, Muslim Town Market, Near Rehman Masjid, Sargodha Road, Faisalabad';
+    }
     const mapsQuery = encodeURIComponent(appt.hospital + ' ' + hospAddress);
     const mapsLink = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 
@@ -278,7 +288,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!modal || !printableArea) return;
 
     const sched = window.getDoctorSchedule();
-    const hospAddress = appt.hospital.includes('Faisal') ? sched.faisal.address : sched.kardaar.address;
+    let hospAddress = sched.kardaar ? sched.kardaar.address : 'Plot No 5, Kohinoor City Madina Town, Faisalabad';
+    if (appt.hospital && appt.hospital.includes('Faisal')) {
+      hospAddress = sched.faisal ? sched.faisal.address : "673-A Lower Canal Rd E, Block A People's Colony No 1, Faisalabad";
+    } else if (appt.hospital && appt.hospital.includes('Yashfeen')) {
+      hospAddress = (sched.yashfeen && sched.yashfeen.address) ? sched.yashfeen.address : 'Muslim Town No. 1, Gate No. 2, Muslim Town Market, Near Rehman Masjid, Sargodha Road, Faisalabad';
+    }
     const cleanPhone = (appt.phone || '').replace(/[^0-9+]/g, '');
     const waPhone = cleanPhone.startsWith('0') ? '92' + cleanPhone.slice(1) : (cleanPhone.startsWith('+') ? cleanPhone.slice(1) : cleanPhone);
     const waMessage = window.formatWhatsAppMessage(appt);
@@ -957,6 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hospital Fee displays
     document.querySelectorAll('.kardaarFeeDisplay').forEach(el => el.textContent = `Rs. ${sched.feeStandard.toLocaleString()}`);
     document.querySelectorAll('.faisalFeeDisplay').forEach(el => el.textContent = `Rs. ${sched.feeStandard.toLocaleString()}`);
+    document.querySelectorAll('.yashfeenFeeDisplay').forEach(el => el.textContent = `Rs. ${sched.feeStandard.toLocaleString()}`);
 
     // Load Schedule inputs if form exists
     const feeStandardInput = document.getElementById('feeStandard');
@@ -965,12 +981,17 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('feeFollowup').value = sched.feeFollowup || 1500;
       document.getElementById('feeEmergency').value = sched.feeEmergency || 3000;
       document.getElementById('doctorLiveNotice').value = sched.notice || '';
-      document.getElementById('kardaarDays').value = sched.kardaar.days;
-      document.getElementById('kardaarTimings').value = sched.kardaar.timings;
-      document.getElementById('kardaarAddress').value = sched.kardaar.address;
-      document.getElementById('faisalDays').value = sched.faisal.days;
-      document.getElementById('faisalTimings').value = sched.faisal.timings;
-      document.getElementById('faisalAddress').value = sched.faisal.address;
+      document.getElementById('kardaarDays').value = (sched.kardaar && sched.kardaar.days) ? sched.kardaar.days : 'Monday to Thursday';
+      document.getElementById('kardaarTimings').value = (sched.kardaar && sched.kardaar.timings) ? sched.kardaar.timings : '4:00 PM - 7:00 PM';
+      document.getElementById('kardaarAddress').value = (sched.kardaar && sched.kardaar.address) ? sched.kardaar.address : 'Plot No 5, Kohinoor City Madina Town, Faisalabad';
+      document.getElementById('faisalDays').value = (sched.faisal && sched.faisal.days) ? sched.faisal.days : 'Friday & Saturday';
+      document.getElementById('faisalTimings').value = (sched.faisal && sched.faisal.timings) ? sched.faisal.timings : '6:00 PM - 9:00 PM';
+      document.getElementById('faisalAddress').value = (sched.faisal && sched.faisal.address) ? sched.faisal.address : "673-A Lower Canal Rd E, Block A People's Colony No 1, Faisalabad";
+      if (document.getElementById('yashfeenDays')) {
+        document.getElementById('yashfeenDays').value = (sched.yashfeen && sched.yashfeen.days) ? sched.yashfeen.days : 'Sunday / By Appointment';
+        document.getElementById('yashfeenTimings').value = (sched.yashfeen && sched.yashfeen.timings) ? sched.yashfeen.timings : '11:00 AM - 2:00 PM';
+        document.getElementById('yashfeenAddress').value = (sched.yashfeen && sched.yashfeen.address) ? sched.yashfeen.address : 'Muslim Town No. 1, Gate No. 2, Muslim Town Market, Near Rehman Masjid, Sargodha Road, Faisalabad';
+      }
     }
 
     // 2. Render Master Appointments Table
@@ -1478,6 +1499,11 @@ document.addEventListener('DOMContentLoaded', () => {
           days: document.getElementById('faisalDays').value.trim(),
           timings: document.getElementById('faisalTimings').value.trim(),
           address: document.getElementById('faisalAddress').value.trim()
+        },
+        yashfeen: {
+          days: document.getElementById('yashfeenDays') ? document.getElementById('yashfeenDays').value.trim() : 'Sunday / By Appointment',
+          timings: document.getElementById('yashfeenTimings') ? document.getElementById('yashfeenTimings').value.trim() : '11:00 AM - 2:00 PM',
+          address: document.getElementById('yashfeenAddress') ? document.getElementById('yashfeenAddress').value.trim() : 'Muslim Town No. 1, Gate No. 2, Muslim Town Market, Near Rehman Masjid, Sargodha Road, Faisalabad'
         }
       };
 
