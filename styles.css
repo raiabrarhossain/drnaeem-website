@@ -1456,3 +1456,236 @@ body[data-lang="ur"] .modal-body content ul {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   Appointment Token Slip & Clinical Receipt Styles
+   ========================================================================== */
+.appointment-slip-card {
+  background: #ffffff;
+  border: 2px dashed #0d5c56;
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 10px 25px rgba(13, 92, 86, 0.08);
+  font-family: var(--font-sans);
+  position: relative;
+  color: #1e293b;
+}
+
+.slip-header-block {
+  text-align: center;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+.slip-clinic-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #072e2b;
+  letter-spacing: -0.02em;
+}
+
+.slip-doctor-sub {
+  font-size: 0.825rem;
+  color: #0d5c56;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.slip-token-number {
+  display: inline-block;
+  background: #e6f4f2;
+  color: #0d5c56;
+  border: 1px solid #99f6e4;
+  padding: 6px 18px;
+  border-radius: 30px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-top: 10px;
+  letter-spacing: 0.05em;
+}
+
+.slip-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.slip-detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.slip-detail-label {
+  font-size: 0.725rem;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.slip-detail-val {
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.slip-fee-container {
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.slip-fee-title {
+  font-size: 0.85rem;
+  color: #475569;
+  font-weight: 700;
+}
+
+.slip-fee-rupees {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #0d5c56;
+}
+
+.slip-guidelines {
+  font-size: 0.775rem;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 12px 14px;
+  border-radius: 8px;
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.slip-guidelines ul {
+  margin: 6px 0 0 16px;
+  padding: 0;
+}
+
+.slip-action-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Status & Role Badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-paid {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge-pending {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge-waiting {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.badge-doctor {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.badge-done {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+.badge-role-admin {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.badge-role-receptionist {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+/* Quick Filter Bar */
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #f8fafc;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.filter-bar input, .filter-bar select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+/* Receptionist Desk Grid */
+.reception-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  gap: 24px;
+}
+
+@media (max-width: 992px) {
+  .reception-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Printable Slip Only */
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+  .admin-header, .admin-nav, .stats-row, .filter-bar, .slip-action-row, .modal-close, #adminLoginForm, .brand-mark, .modal-backdrop::before {
+    display: none !important;
+  }
+  .modal-backdrop {
+    position: static !important;
+    background: none !important;
+    padding: 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+  }
+  .modal-container {
+    box-shadow: none !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .appointment-slip-card {
+    border: 1px solid #000000 !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+  }
+}
+

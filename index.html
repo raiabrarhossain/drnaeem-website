@@ -652,47 +652,105 @@
         </p>
 
         <form id="appointmentForm">
+          <!-- Patient Registration Fields -->
           <div class="form-row">
             <label>
-              <span data-en="Full Name" data-ur="پورا نام">Full Name</span>
-              <input placeholder="Your full name" required maxLength="100" autoComplete="name" name="full_name" data-en="Your full name" data-ur="اپنا نام درج کریں" />
+              <span data-en="Patient Full Name" data-ur="مریض کا پورا نام">Patient Full Name</span>
+              <input placeholder="e.g. Muhammad Ali" required maxLength="100" autoComplete="name" name="full_name" id="patientFullName" data-en="Patient Full Name" data-ur="مریض کا نام درج کریں" />
             </label>
             <label>
-              <span data-en="Contact Number" data-ur="فون نمبر">Contact Number</span>
-              <input placeholder="e.g. 03007991099" type="tel" required pattern="[+0-9 ()-]{7,20}" maxLength="20" autoComplete="tel" name="phone" data-en="e.g. 03007991099" data-ur="مثلاً 03007991099" />
+              <span data-en="WhatsApp / Phone Number" data-ur="واٹس ایپ / فون نمبر">WhatsApp / Phone Number</span>
+              <input placeholder="e.g. 03007991099" type="tel" required pattern="[+0-9 ()-]{7,20}" maxLength="20" autoComplete="tel" name="phone" id="patientPhone" data-en="e.g. 03007991099" data-ur="مثلاً 03007991099" />
             </label>
           </div>
 
+          <div class="form-row">
+            <label>
+              <span data-en="Age (Years)" data-ur="عمر (سال)">Age (Years)</span>
+              <input type="number" min="1" max="120" placeholder="e.g. 35" required name="age" id="patientAge" />
+            </label>
+            <label>
+              <span data-en="Gender" data-ur="جنس">Gender</span>
+              <select name="gender" id="patientGender" required>
+                <option value="" disabled selected data-en="Select Gender" data-ur="جنس کا انتخاب کریں">Select Gender</option>
+                <option value="Male" data-en="Male" data-ur="مرد">Male</option>
+                <option value="Female" data-en="Female" data-ur="خاتون">Female</option>
+                <option value="Other" data-en="Other" data-ur="دیگر">Other</option>
+              </select>
+            </label>
+            <label>
+              <span data-en="City / Area" data-ur="شہر / علاقہ">City / Area</span>
+              <input placeholder="e.g. Faisalabad" required name="city" id="patientCity" data-en="e.g. Faisalabad" data-ur="مثلاً فیصل آباد" />
+            </label>
+          </div>
+
+          <!-- Doctor & Hospital Details -->
           <label>
-            <span data-en="Preferred Hospital" data-ur="پسندیدہ ہسپتال">Preferred Hospital</span>
-            <select name="hospital" required>
+            <span data-en="Select Hospital Clinic" data-ur="ہسپتال کلینک کا انتخاب کریں">Select Hospital Clinic</span>
+            <select name="hospital" id="patientHospital" required>
               <option value="" disabled selected data-en="Select a hospital" data-ur="ہسپتال کا انتخاب کریں">Select a hospital</option>
-              <option value="Kardaar Hospital">Kardaar Hospital</option>
-              <option value="Faisal Hospital">Faisal Hospital</option>
+              <option value="Kardaar Hospital">Kardaar Hospital (Kohinoor City, Madina Town — Mon-Thu 4:00 PM to 7:00 PM)</option>
+              <option value="Faisal Hospital">Faisal Hospital (Lower Canal Road, People's Colony — Fri-Sat 6:00 PM to 9:00 PM)</option>
             </select>
           </label>
 
           <div class="form-row">
             <label>
-              <span data-en="Procedure / Concern" data-ur="بیماری / مسئلہ">Procedure / Concern</span>
-              <input placeholder="How can we help?" required maxLength="1000" name="concern" data-en="How can we help?" data-ur="بیماری کی مختصر تفصیل" />
+              <span data-en="Consultation Specialty" data-ur="بیماری / شعبہ">Consultation Specialty</span>
+              <select name="concern" id="patientConcern" required>
+                <option value="Breast Cancer Surgery & Evaluation" data-en="Breast Cancer Surgery & Evaluation" data-ur="چھاتی کے کینسر کا معائنہ اور سرجری">Breast Cancer Surgery & Evaluation</option>
+                <option value="Thyroid Swelling / Nodules Surgery" data-en="Thyroid Swelling / Nodules Surgery" data-ur="تھائرائیڈ غدود کی گلٹیاں اور سرجری">Thyroid Swelling / Nodules Surgery</option>
+                <option value="Gallbladder / Hernia / Laparoscopic" data-en="Gallbladder / Hernia / Laparoscopic" data-ur="پتہ اور ہرنیا کی لیپروسکوپک سرجری">Gallbladder / Hernia / Laparoscopic</option>
+                <option value="General Surgical Consultation" data-en="General Surgical Consultation" data-ur="جنرل سرجیکل معائنہ">General Surgical Consultation</option>
+                <option value="Post-Operative Follow-up" data-en="Post-Operative Follow-up" data-ur="سرجری کے بعد کا معائنہ">Post-Operative Follow-up</option>
+              </select>
             </label>
             <label>
               <span data-en="Preferred Date" data-ur="تاریخ">Preferred Date</span>
-              <input type="date" required name="preferred_date" />
+              <input type="date" required name="preferred_date" id="patientDate" />
+            </label>
+            <label>
+              <span data-en="Preferred Time Slot" data-ur="پسندیدہ وقت کا سلاٹ">Preferred Time Slot</span>
+              <select name="time_slot" id="patientTimeSlot" required>
+                <option value="04:00 PM - 04:30 PM">04:00 PM - 04:30 PM</option>
+                <option value="04:30 PM - 05:00 PM">04:30 PM - 05:00 PM</option>
+                <option value="05:00 PM - 05:30 PM">05:00 PM - 05:30 PM</option>
+                <option value="05:30 PM - 06:00 PM">05:30 PM - 06:00 PM</option>
+                <option value="06:00 PM - 06:30 PM">06:00 PM - 06:30 PM</option>
+                <option value="06:30 PM - 07:00 PM">06:30 PM - 07:00 PM</option>
+                <option value="07:00 PM - 07:30 PM">07:00 PM - 07:30 PM</option>
+                <option value="07:30 PM - 08:00 PM">07:30 PM - 08:00 PM</option>
+                <option value="08:00 PM - 08:30 PM">08:00 PM - 08:30 PM</option>
+              </select>
             </label>
           </div>
 
+          <label>
+            <span data-en="Symptoms / Medical History (Optional)" data-ur="علامات / سابقہ بیماری کی تفصیل (اختیاری)">Symptoms / Medical History (Optional)</span>
+            <input placeholder="Brief details about swelling, pain, past surgery, or ultrasound findings..." maxLength="500" name="symptoms" id="patientSymptoms" data-en="Brief details about swelling, pain, etc." data-ur="بیماری یا تکلیف کی مختصر تفصیل" />
+          </label>
+
+          <!-- Fee Rupees Banner -->
+          <div style="background: #e6f4f2; border: 1.5px solid #99f6e4; padding: 14px 18px; border-radius: var(--radius-sm); margin: 16px 0; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong style="color: var(--primary-dark); font-size: 0.95rem;" data-en="Doctor Consultation Fee" data-ur="ڈاکٹر کنسلٹیشن فیس">Doctor Consultation Fee</strong>
+              <div style="font-size: 0.8rem; color: var(--muted-text);" data-en="Payable at hospital reception desk upon check-in" data-ur="ہسپتال ریسیپشن کاؤنٹر پر قابل ادائیگی">Payable at hospital reception desk upon check-in</div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 1.35rem; font-weight: 900; color: var(--primary); font-family: inherit;">Rs. 2,000</span>
+            </div>
+          </div>
+
           <label class="consent">
-            <input type="checkbox" required />
-            <span data-en="I consent to being contacted about my consultation inquiry." data-ur="میں اپوائنٹمنٹ کی تصدیق کے لیے رابطے سے متفق ہوں۔">I consent to being contacted about my consultation inquiry.</span>
+            <input type="checkbox" required checked />
+            <span data-en="I consent to register as a patient and generate my digital consultation token slip." data-ur="میں مریض کے طور پر رجسٹریشن اور ٹوکن سلپ کے اجراء سے متفق ہوں۔">I consent to register as a patient and generate my digital consultation token slip.</span>
           </label>
 
           <button type="submit" class="button">
-            <span data-en="Send Consultation Inquiry" data-ur="درخواست ارسال کریں">Send Consultation Inquiry</span>
+            <span data-en="Register & Generate Token Slip" data-ur="رجسٹر کریں اور اپوائنٹمنٹ سلپ حاصل کریں">Register & Generate Token Slip</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
           </button>
-          <small data-en="Appointment dates and OPD timings are subject to confirmation." data-ur="او پی ڈی کے اوقات اور تاریخ کی تصدیق کال کے ذریعے کی جائے گی۔">Appointment dates and OPD timings are subject to confirmation.</small>
+          <small data-en="Your official appointment slip with token number & rupees fee will be issued immediately." data-ur="آپ کو ٹوکن نمبر اور فیس کے ساتھ فوری آفیشل سلپ فراہم کی جائے گی۔">Your official appointment slip with token number & rupees fee will be issued immediately.</small>
         </form>
       </div>
     </section>
@@ -756,43 +814,69 @@
         </div>
       </div>
     </div>
-  <!-- Site Login Modal (Admin & Patient User Login) -->
+  <!-- Site Login Modal (Admin, Receptionist & Patient Logins) -->
   <div class="modal-backdrop" id="siteLoginModal">
-    <div class="modal-container" style="max-width: 480px;">
+    <div class="modal-container" style="max-width: 500px;">
       <button class="modal-close" id="siteLoginModalClose" aria-label="Close modal">&times;</button>
       <div class="modal-body">
         <div style="text-align: center; margin-bottom: 20px;">
           <span class="brand-mark" style="margin: 0 auto 10px; width: 40px; height: 40px;">
             <svg viewBox="0 0 40 40" fill="none" class="brand-logo"><path d="M20 3.5l13.5 4.8v9.7c0 8.5-5.7 14.2-13.5 18.5-7.8-4.3-13.5-10-13.5-18.5V8.3L20 3.5z" stroke="currentColor" stroke-width="1.7"></path></svg>
           </span>
-          <h2 style="font-size: 1.5rem; color: var(--primary-dark); font-weight: 800;" data-en="Portal Login" data-ur="پورٹل لاگ ان">Portal Login</h2>
-          <p style="color: var(--muted-text); font-size: 0.875rem;" data-en="Sign in as Admin or Patient User" data-ur="ایڈمن یا مریض کے طور پر لاگ ان کریں">Sign in as Admin or Patient User</p>
+          <h2 style="font-size: 1.5rem; color: var(--primary-dark); font-weight: 800;" data-en="Clinic Access Portal" data-ur="کلینک لاگ ان پورٹل">Clinic Access Portal</h2>
+          <p style="color: var(--muted-text); font-size: 0.85rem;" data-en="Select your role to sign into the system" data-ur="اپنا کردار منتخب کر کے لاگ ان کریں">Select your role to sign into the system</p>
         </div>
 
-        <!-- Login Type Tabs -->
-        <div style="display: flex; gap: 8px; background: var(--light-bg); padding: 4px; border-radius: var(--radius-sm); margin-bottom: 20px;">
-          <button id="loginTabAdmin" class="button" style="flex: 1; padding: 8px; font-size: 0.85rem; border-radius: 6px; background: var(--primary); color: white; border: none;">🔐 Admin / Staff</button>
-          <button id="loginTabPatient" class="button button-secondary" style="flex: 1; padding: 8px; font-size: 0.85rem; border-radius: 6px;">👤 Patient User</button>
+        <!-- 3-Way Login Type Tabs -->
+        <div style="display: flex; gap: 6px; background: var(--light-bg); padding: 5px; border-radius: var(--radius-sm); margin-bottom: 20px;">
+          <button id="loginTabAdmin" type="button" class="button" style="flex: 1; padding: 8px 4px; font-size: 0.8rem; border-radius: 6px; background: var(--primary); color: white; border: none; font-weight: 700;">🩺 Doctor/Admin</button>
+          <button id="loginTabReceptionist" type="button" class="button button-secondary" style="flex: 1; padding: 8px 4px; font-size: 0.8rem; border-radius: 6px; font-weight: 700;">📋 Receptionist</button>
+          <button id="loginTabPatient" type="button" class="button button-secondary" style="flex: 1; padding: 8px 4px; font-size: 0.8rem; border-radius: 6px; font-weight: 700;">👤 Patient</button>
         </div>
 
-        <!-- Form 1: Admin / Staff Login -->
+        <!-- Form 1: Admin / Doctor Login -->
         <form id="modalAdminForm">
+          <div style="background: #e0f2fe; border: 1px solid #bae6fd; padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; font-size: 0.8rem; color: #0369a1;">
+            <strong>Doctor / Super Admin Access:</strong> Schedule management, master appointments, staff accounts & financials.
+          </div>
           <label>
-            <span data-en="Username" data-ur="یوزر نیم">Username</span>
-            <input type="text" id="modalAdminUser" placeholder="Username (default: admin)" required />
+            <span data-en="Admin Username" data-ur="ایڈمن یوزر نیم">Admin Username</span>
+            <input type="text" id="modalAdminUser" placeholder="admin" value="admin" required />
           </label>
           <label style="margin-top: 10px;">
-            <span data-en="Password" data-ur="پاس ورڈ">Password</span>
-            <input type="password" id="modalAdminPass" placeholder="Password (default: admin123)" required />
+            <span data-en="Admin Password" data-ur="ایڈمن پاس ورڈ">Admin Password</span>
+            <input type="password" id="modalAdminPass" placeholder="admin123" value="admin123" required />
           </label>
           <div id="modalAdminError" style="color: #dc2626; font-size: 0.825rem; display: none; margin-top: 6px;">Incorrect username or password.</div>
           <button type="submit" class="button" style="width: 100%; margin-top: 16px;">
-            <span data-en="Login to Admin Portal" data-ur="ایڈمن پورٹل لاگ ان کریں">Login to Admin Portal</span> &rarr;
+            <span data-en="Login as Doctor / Admin" data-ur="بطور ایڈمن لاگ ان کریں">Login as Doctor / Admin</span> &rarr;
           </button>
         </form>
 
-        <!-- Form 2: Patient User Login -->
+        <!-- Form 2: Receptionist Login -->
+        <form id="modalReceptionistForm" style="display: none;">
+          <div style="background: #fef3c7; border: 1px solid #fde68a; padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; font-size: 0.8rem; color: #92400e;">
+            <strong>Reception Desk Access:</strong> Book patient appointments, issue consultation slips, and send slips via WhatsApp with rupees receipt.
+          </div>
+          <label>
+            <span data-en="Receptionist Username" data-ur="ریسیپشنسٹ یوزر نیم">Receptionist Username</span>
+            <input type="text" id="modalRecepUser" placeholder="receptionist" value="receptionist" required />
+          </label>
+          <label style="margin-top: 10px;">
+            <span data-en="Receptionist Password" data-ur="ریسیپشنسٹ پاس ورڈ">Receptionist Password</span>
+            <input type="password" id="modalRecepPass" placeholder="recep123" value="recep123" required />
+          </label>
+          <div id="modalRecepError" style="color: #dc2626; font-size: 0.825rem; display: none; margin-top: 6px;">Incorrect username or password.</div>
+          <button type="submit" class="button" style="width: 100%; margin-top: 16px; background: #0d9488; color: white;">
+            <span data-en="Login to Receptionist Desk" data-ur="ریسیپشن ڈیسک لاگ ان کریں">Login to Receptionist Desk</span> &rarr;
+          </button>
+        </form>
+
+        <!-- Form 3: Patient User Lookup -->
         <form id="modalPatientForm" style="display: none;">
+          <div style="background: #f1f5f9; border: 1px solid #e2e8f0; padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; font-size: 0.8rem; color: #475569;">
+            <strong>Patient Record:</strong> View your appointment status, token slips, and upcoming consultation timings.
+          </div>
           <label>
             <span data-en="Patient Contact Number" data-ur="مریض کا فون نمبر">Patient Contact Number</span>
             <input type="tel" id="modalPatientPhone" placeholder="e.g. 03007991099" required />
@@ -805,6 +889,16 @@
             <span data-en="Access Patient Portal" data-ur="مریض پورٹل کھولیں">Access Patient Portal</span> &rarr;
           </button>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Universal Appointment Token Slip & WhatsApp Receipt Modal -->
+  <div class="modal-backdrop" id="appointmentSlipModal">
+    <div class="modal-container" style="max-width: 540px;">
+      <button class="modal-close" id="appointmentSlipModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-body" id="printableSlipArea">
+        <!-- Rendered dynamically -->
       </div>
     </div>
   </div>

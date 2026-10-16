@@ -1,17 +1,45 @@
-# Dr. Muhammad Naeem - Consultant Surgeon Website
+# Dr. Muhammad Naeem - Consultant Surgeon Website & Clinic Management System
 
-A modern, responsive, high-performance doctor website designed for **Dr. Muhammad Naeem (Consultant Surgeon in Faisalabad)** specializing in Breast Cancer, Thyroid Conditions, and General Surgery.
+A modern, responsive, high-performance medical website and clinic management portal designed for **Dr. Muhammad Naeem (Consultant Surgeon in Faisalabad)** specializing in Breast Cancer, Thyroid Conditions, and General Surgery.
 
 ---
 
 ## 🌟 Key Features
 
-- **Ready for Hostinger & GitHub Pages**: Built with standard clean HTML5, CSS3, JavaScript, and asset images. Zero compilation or complex server setup required!
-- **Bilingual Support (English & Urdu)**: One-click interactive toggle switches between English and Urdu with native RTL (Right-to-Left) typography.
-- **Appointment Consultation Form**: Patients can submit appointment inquiries directly, receive instant interactive feedback, and launch pre-filled WhatsApp messages to `03007991099`.
-- **Interactive Patient Education / Blog**: Interactive modal popup reader on main page + standalone subpages in `/blog/` for direct URLs.
-- **Hospital Affiliations**: Interactive location cards for **Kardaar Hospital** and **Faisal Hospital** with direct Google Maps integration.
-- **SEO & Physician Schema**: Includes Schema.org `Physician` structured data, Open Graph tags, and mobile responsive optimization.
+1. **Patient Registration & Proper Doctor Appointments**:
+   - Comprehensive registration fields: Patient Full Name, Phone / WhatsApp, Age, Gender, City, Hospital Branch, Clinical Specialty, Preferred Date, and Preferred Time Slot.
+   - Live **Consultation Fee in Rupees (Rs.)** dynamically loaded from doctor settings.
+   - Generates unique **Digital Consultation Token Slips** (e.g., `SLIP-4821`).
+
+2. **2 Role-Based Logins**:
+   - **🩺 Role 1: Doctor / Super Admin** (`admin` / `admin123`)
+     - Complete oversight: Doctor Schedule & OPD Timings Manager (Kardaar & Faisal hospitals), Consultation Fees in Rupees (Rs. 2,000 standard, Rs. 1,500 follow-up), Financial & Revenue summary in Rupees (Paid vs Pending), Master Appointments table, Patient Directory, Staff & Receptionist account creation, and Blog Manager.
+   - **📋 Role 2: Front Desk Receptionist** (`receptionist` / `recep123`)
+     - Walk-in / Phone patient registration & quick appointment booking.
+     - Live Queue Management: Track waiting patients, consultation with doctor, and completed visits.
+     - Fee collection in Rupees (Cash, JazzCash, EasyPaisa, Bank).
+     - **WhatsApp Appointment Slip Dispatcher**: 1-click sends complete official token slip, doctor details, hospital address & Google Maps link, and consultation fee in rupees directly to patient's WhatsApp!
+     - Direct **Slip Printing** formatted for clean counter receipts.
+
+3. **Bilingual Support (English & Urdu)**:
+   - One-click interactive toggle switches between English and Urdu with native RTL (Right-to-Left) typography.
+
+4. **Hospital Affiliations**:
+   - Interactive location cards and Google Maps integration for:
+     - **Kardaar Hospital**: Mon-Thu 4:00 PM - 7:00 PM (Plot No 5, Kohinoor City Madina Town, Faisalabad)
+     - **Faisal Hospital**: Fri-Sat 6:00 PM - 9:00 PM (673-A Lower Canal Rd E, People's Colony No 1, Faisalabad)
+
+5. **Patient Portal**:
+   - Patients can sign in with their contact number to view their upcoming consultation slots and digital token slips.
+
+---
+
+## 🔑 Login Credentials
+
+| Role | Username | Password | Access Level |
+| :--- | :--- | :--- | :--- |
+| **Doctor / Super Admin** | `admin` | `admin123` | Full Access: Schedule, Timings, Rupees Fees, Master Records, Staff Accounts |
+| **Front Desk Receptionist** | `receptionist` | `recep123` | Queue Desk, Register Patients, Issue Slips, Send WhatsApp Slips with Rupees |
 
 ---
 
@@ -19,12 +47,13 @@ A modern, responsive, high-performance doctor website designed for **Dr. Muhamma
 
 ```text
 Doctor website/
-├── index.html                  # Main Landing Page
-├── styles.css                  # Modern Medical Design System & Responsive Styles
-├── script.js                   # Interactive JS (Bilingual toggle, form handling, modals)
+├── index.html                  # Main Website & Patient Registration Booking
+├── admin.html                  # Dual-Role Clinic Management Portal (Admin & Receptionist)
+├── styles.css                  # Design System, Responsive Layout & Printable Slip Styles
+├── script.js                   # Application Logic, Persistence, Queue & WhatsApp Dispatcher
 ├── images/
 │   ├── dr-naeem.png            # Consultant Surgeon Profile Photo
-│   └── hero.png                # Consultation Environment Hero Banner
+│   └── hero.png                # Hero Banner
 ├── blog/
 │   ├── index.html              # Patient Articles Listing
 │   ├── thyroid-nodules-when-to-worry.html
@@ -36,38 +65,18 @@ Doctor website/
 
 ---
 
-## 🚀 How to Upload to GitHub
+## 🚀 GitHub Connection
 
-1. Open your terminal in this directory:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit for Dr. Muhammad Naeem Website"
-   ```
-2. Create a new repository on your GitHub account (e.g., `doctor-website`).
-3. Connect your local repository and push:
-   ```bash
-   git remote add origin https://github.com/YOUR-USERNAME/doctor-website.git
-   git branch -M main
-   git push -u origin main
-   ```
+The repository is linked to GitHub:
+- **Remote Repository**: `https://github.com/raiabrarhossain/drnaeem-website.git`
+- **Main Branch**: `main`
 
----
-
-## 🌐 How to Upload to Hostinger
-
-### Option A: Via Hostinger File Manager (Easiest & Fastest)
-1. Log in to your Hostinger cPanel / hPanel.
-2. Go to **Websites** -> Select your domain/subdomain -> **File Manager**.
-3. Open the `public_html` directory.
-4. Upload all files (`index.html`, `styles.css`, `script.js`, `images/`, `blog/`).
-5. Your website is instantly LIVE!
-
-### Option B: Via Hostinger Git Deployment
-1. In Hostinger hPanel, go to **Advanced** -> **Git**.
-2. Paste your GitHub repository URL: `https://github.com/YOUR-USERNAME/doctor-website.git`.
-3. Set the branch to `main` and directory to `/public_html`.
-4. Click **Create** and then **Deploy**. Hostinger will pull and publish the site automatically!
+To sync and push changes:
+```bash
+git add .
+git commit -m "Add dual-role login (Admin & Receptionist), patient appointment registration, schedule manager, and WhatsApp slip in rupees"
+git push origin main
+```
 
 ---
 
