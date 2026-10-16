@@ -243,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.getAppointments();
   window.getPatients();
   window.getAdminUsers();
+  localStorage.removeItem('naeem_patient_session');
 
   // =========================================================================
   // 2. UNIVERSAL APPOINTMENT TOKEN SLIP & WHATSAPP SENDER
@@ -274,6 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
 💰 *Consultation Fee:* Rs. ${Number(appt.feeRupees || 2000).toLocaleString()}
 💳 *Payment Status:* ${appt.paymentStatus === 'Paid' ? 'PAID ✅' : 'Payable at Counter ⏳'}
 ══════════════════════════════════
+⏱️ *رابطہ کا وقت:* ہماری ٹیم 2 گھنٹے کے اندر آپ سے رابطہ کرے گی (Contact within 2 hours).
 ⚠️ *IMPORTANT INSTRUCTIONS FOR PATIENT:*
 1. Please arrive at the reception desk 15 minutes before your time slot.
 2. Present this digital slip at the reception desk to confirm your queue number.
@@ -306,6 +308,14 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="slip-doctor-sub">MBBS, FCPS (Surgery) · Consultant Surgeon</div>
           <div style="font-size: 0.78rem; color: #64748b; margin-top: 2px;">Specialist in Breast Cancer, Thyroid Conditions & General Surgery</div>
           <div class="slip-token-number">${appt.slipNo || 'TOKEN #SLIP-1024'}</div>
+          
+          <!-- 2-Hour Contact Banner in Noori Nastaliq Urdu -->
+          <div class="urdu-contact-banner">
+            ہم 2 گھنٹے کے اندر آپ سے رابطہ کریں گے
+            <div style="font-family: var(--font-sans); font-size: 0.8rem; color: #0d5c56; direction: ltr; margin-top: 2px; font-weight: 600;">
+              Our reception will contact you within 2 hours to confirm your consultation slot.
+            </div>
+          </div>
         </div>
 
         <div class="slip-details-grid">
@@ -443,9 +453,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Register or update patient directory
       window.upsertPatient(newAppt);
 
-      // Save patient session for instant access
-      localStorage.setItem('naeem_patient_session', JSON.stringify({ name, phone }));
-      if (window.checkHeaderLoginStatus) window.checkHeaderLoginStatus();
+      // Do not create a header logout button for patient booking (only Admin & Receptionist log in)
+      localStorage.removeItem('naeem_patient_session');
+      window.checkHeaderLoginStatus();
 
       // Show the official interactive Appointment Token Slip
       window.showAppointmentSlip(newAppt);
@@ -568,28 +578,35 @@ document.addEventListener('DOMContentLoaded', () => {
   window.checkHeaderLoginStatus = () => {
     const loggedUser = sessionStorage.getItem('naeem_admin_logged_user');
     const loggedRole = sessionStorage.getItem('naeem_admin_role');
-    const loggedPatient = JSON.parse(localStorage.getItem('naeem_patient_session') || 'null');
     const isUr = localStorage.getItem('site_lang') === 'ur';
 
-    if (loggedUser || loggedPatient) {
+    // Only show logout button if Admin or Receptionist is logged in!
+    if (loggedUser) {
       if (headerLogoutBtn) headerLogoutBtn.style.display = 'inline-flex';
       if (mobileLogoutBtn) mobileLogoutBtn.style.display = 'block';
-    } else {
-      if (headerLogoutBtn) headerLogoutBtn.style.display = 'none';
-      if (mobileLogoutBtn) mobileLogoutBtn.style.display = 'none';
-    }
-
-    if (mainLoginBtn) {
-      if (loggedUser) {
+      if (mainLoginBtn) {
         mainLoginBtn.innerHTML = `🔐 ${loggedUser} (${loggedRole || 'Staff'})`;
         mainLoginBtn.setAttribute('href', 'admin.html');
-      } else if (loggedPatient) {
-        mainLoginBtn.innerHTML = `👤 ${loggedPatient.name}`;
-        mainLoginBtn.setAttribute('href', '#');
-        mainLoginBtn.onclick = (e) => { e.preventDefault(); window.openSiteLoginModal('patient'); };
-      } else {
+        mainLoginBtn.onclick = null;
+      }
+      if (mobileLoginBtn) {
+        mobileLoginBtn.innerHTML = `🔐 ${loggedUser} (${loggedRole || 'Staff'})`;
+        mobileLoginBtn.setAttribute('href', 'admin.html');
+        mobileLoginBtn.onclick = null;
+      }
+    } else {
+      // Normal visitors / patients: Logout button is strictly hidden
+      if (headerLogoutBtn) headerLogoutBtn.style.display = 'none';
+      if (mobileLogoutBtn) mobileLogoutBtn.style.display = 'none';
+      if (mainLoginBtn) {
         mainLoginBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg> <span>${isUr ? 'لاگ ان' : 'Login'}</span>`;
         mainLoginBtn.setAttribute('href', 'admin.html');
+        mainLoginBtn.onclick = null;
+      }
+      if (mobileLoginBtn) {
+        mobileLoginBtn.innerHTML = `🔐 ${isUr ? 'لاگ ان پورٹل' : 'Login Portal'}`;
+        mobileLoginBtn.setAttribute('href', 'admin.html');
+        mobileLoginBtn.onclick = null;
       }
     }
   };

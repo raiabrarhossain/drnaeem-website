@@ -1689,3 +1689,20 @@ body[data-lang="ur"] .modal-body content ul {
   }
 }
 
+/* Urdu Nastaliq 2-Hour Contact Banner */
+.urdu-contact-banner {
+  font-family: var(--font-urdu), 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
+  direction: rtl;
+  text-align: center;
+  font-size: 1.35rem;
+  line-height: 2.2;
+  color: #072e2b;
+  background: #e6f4f2;
+  border: 1.5px solid #0d5c56;
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin: 14px 0;
+  box-shadow: 0 4px 12px rgba(13, 92, 86, 0.08);
+}
+
+
