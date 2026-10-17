@@ -212,7 +212,7 @@
         </button>
       </div>
 
-      <form id="adminLoginForm" onsubmit="event.preventDefault(); window.performPortalLogin(document.getElementById('adminUsername').value, document.getElementById('adminPassword').value);">
+      <form id="adminLoginForm" onsubmit="event.preventDefault(); window.performPortalLogin(document.getElementById('adminUsername').value, document.getElementById('adminPassword').value); return false;">
         <label>
           <span id="loginUsernameLabel">Admin Username</span>
           <input type="text" id="adminUsername" placeholder="e.g. admin" value="admin" autocomplete="username" required />
@@ -225,7 +225,7 @@
 
         <div id="loginError" style="color: #dc2626; font-size: 0.825rem; display: none; margin-top: 8px;">Incorrect username or password. Please verify credentials!</div>
         
-        <button type="submit" id="adminLoginSubmitBtn" class="button" style="width: 100%; margin-top: 18px; cursor: pointer;" onclick="window.performPortalLogin(document.getElementById('adminUsername').value, document.getElementById('adminPassword').value)">
+        <button type="submit" id="adminLoginSubmitBtn" class="button" style="width: 100%; margin-top: 18px; cursor: pointer;">
           Sign In to Portal &rarr;
         </button>
       </form>

@@ -4,6 +4,26 @@
  * Roles: Doctor/Admin, Front Desk Receptionist, and Patient Portal
  */
 
+// Global resilient in-memory storage fallback (for Safari private browsing / incognito / quota limits)
+window.__memStore = window.__memStore || {};
+window.safeStorageGet = (key) => {
+  try {
+    const val = sessionStorage.getItem(key) || localStorage.getItem(key);
+    if (val !== null && val !== undefined) return val;
+  } catch (e) {}
+  return window.__memStore[key] || null;
+};
+window.safeStorageSet = (key, val) => {
+  window.__memStore[key] = val;
+  try { sessionStorage.setItem(key, val); } catch (e) {}
+  try { localStorage.setItem(key, val); } catch (e) {}
+};
+window.safeStorageRemove = (key) => {
+  delete window.__memStore[key];
+  try { sessionStorage.removeItem(key); } catch (e) {}
+  try { localStorage.removeItem(key); } catch (e) {}
+};
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // =========================================================================
@@ -659,8 +679,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (mobileLogoutBtn) mobileLogoutBtn.addEventListener('click', (e) => { e.preventDefault(); window.performLogout(); });
 
   window.checkHeaderLoginStatus = () => {
-    const loggedUser = sessionStorage.getItem('naeem_admin_logged_user') || localStorage.getItem('naeem_admin_logged_user');
-    const loggedRole = sessionStorage.getItem('naeem_admin_role') || localStorage.getItem('naeem_admin_role');
+    const loggedUser = window.safeStorageGet('naeem_admin_logged_user');
+    const loggedRole = window.safeStorageGet('naeem_admin_role');
     const isUr = localStorage.getItem('site_lang') === 'ur';
 
     // Only show logout button if Admin or Receptionist is logged in!
@@ -684,12 +704,22 @@ document.addEventListener('DOMContentLoaded', () => {
       if (mainLoginBtn) {
         mainLoginBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg> <span>${isUr ? 'لاگ ان' : 'Login'}</span>`;
         mainLoginBtn.setAttribute('href', 'admin.html');
-        mainLoginBtn.onclick = null;
+        mainLoginBtn.onclick = (e) => {
+          if (document.getElementById('siteLoginModal')) {
+            e.preventDefault();
+            window.openSiteLoginModal('admin');
+          }
+        };
       }
       if (mobileLoginBtn) {
         mobileLoginBtn.innerHTML = `🔐 ${isUr ? 'لاگ ان پورٹل' : 'Login Portal'}`;
         mobileLoginBtn.setAttribute('href', 'admin.html');
-        mobileLoginBtn.onclick = null;
+        mobileLoginBtn.onclick = (e) => {
+          if (document.getElementById('siteLoginModal')) {
+            e.preventDefault();
+            window.openSiteLoginModal('admin');
+          }
+        };
       }
     }
   };
@@ -861,22 +891,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const adminLoginSubmitBtn = document.getElementById('adminLoginSubmitBtn');
 
   if (fillAdminDemo) {
-    fillAdminDemo.addEventListener('click', () => {
+    fillAdminDemo.addEventListener('click', (e) => {
+      e.preventDefault();
       if (adminUsernameInput) adminUsernameInput.value = 'admin';
       if (adminPasswordInput) adminPasswordInput.value = 'admin123';
       if (loginRoleAdminBtn) { loginRoleAdminBtn.style.background = 'var(--primary)'; loginRoleAdminBtn.style.color = 'white'; }
       if (loginRoleRecepBtn) { loginRoleRecepBtn.style.background = 'transparent'; loginRoleRecepBtn.style.color = 'var(--dark-text)'; }
       if (loginUsernameLabel) loginUsernameLabel.textContent = 'Admin Username';
+      window.performPortalLogin('admin', 'admin123');
     });
   }
 
   if (fillRecepDemo) {
-    fillRecepDemo.addEventListener('click', () => {
+    fillRecepDemo.addEventListener('click', (e) => {
+      e.preventDefault();
       if (adminUsernameInput) adminUsernameInput.value = 'receptionist';
       if (adminPasswordInput) adminPasswordInput.value = 'recep123';
       if (loginRoleRecepBtn) { loginRoleRecepBtn.style.background = '#0d9488'; loginRoleRecepBtn.style.color = 'white'; }
       if (loginRoleAdminBtn) { loginRoleAdminBtn.style.background = 'transparent'; loginRoleAdminBtn.style.color = 'var(--dark-text)'; }
       if (loginUsernameLabel) loginUsernameLabel.textContent = 'Receptionist Username';
+      window.performPortalLogin('receptionist', 'recep123');
     });
   }
 
@@ -906,7 +940,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.performPortalLogin = (userVal, pwdVal, redirectIfExternal = true) => {
     userVal = (userVal || '').trim();
     pwdVal = (pwdVal || '').trim();
-    const users = window.getAdminUsers();
+    const users = window.getAdminUsers ? window.getAdminUsers() : [];
 
     // 1. Check matching in registered users
     let match = users.find(u => 
@@ -926,13 +960,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    const errEl = document.getElementById('loginError');
+
     if (match) {
-      sessionStorage.setItem('naeem_admin_logged_user', match.fullName);
-      sessionStorage.setItem('naeem_admin_role', match.role || 'Super Admin');
-      localStorage.setItem('naeem_admin_logged_user', match.fullName);
-      localStorage.setItem('naeem_admin_role', match.role || 'Super Admin');
+      window.safeStorageSet('naeem_admin_logged_user', match.fullName);
+      window.safeStorageSet('naeem_admin_role', match.role || 'Super Admin');
       
-      if (loginError) loginError.style.display = 'none';
+      if (errEl) errEl.style.display = 'none';
 
       // If we are on admin.html, immediately activate dashboard view
       if (document.getElementById('adminDashboard') || document.getElementById('loginScreen')) {
@@ -942,8 +976,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       return true;
     } else {
-      if (loginError) {
-        loginError.innerHTML = `
+      if (errEl) {
+        errEl.innerHTML = `
           <div style="font-weight: 600; margin-bottom: 6px;">Incorrect username or password.</div>
           <div style="font-size: 0.8rem; margin-bottom: 8px;">Quick 1-Click Access:</div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -951,7 +985,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button type="button" onclick="window.performPortalLogin('receptionist','recep123')" style="background:#0d9488;color:white;border:none;padding:6px 10px;border-radius:4px;font-size:0.78rem;cursor:pointer;font-weight:700;">📋 Login as Receptionist</button>
           </div>
         `;
-        loginError.style.display = 'block';
+        errEl.style.display = 'block';
       }
       return false;
     }
@@ -977,12 +1011,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      sessionStorage.removeItem('naeem_admin_logged_user');
-      sessionStorage.removeItem('naeem_admin_role');
-      localStorage.removeItem('naeem_admin_logged_user');
-      localStorage.removeItem('naeem_admin_role');
-      if (adminDashboard) adminDashboard.style.setProperty('display', 'none', 'important');
-      if (loginScreen) loginScreen.style.setProperty('display', 'flex', 'important');
+      window.safeStorageRemove('naeem_admin_logged_user');
+      window.safeStorageRemove('naeem_admin_role');
+      const dash = document.getElementById('adminDashboard');
+      const scr = document.getElementById('loginScreen');
+      if (dash) dash.style.setProperty('display', 'none', 'important');
+      if (scr) scr.style.setProperty('display', 'flex', 'important');
       if (adminUsernameInput) adminUsernameInput.value = 'admin';
       if (adminPasswordInput) adminPasswordInput.value = 'admin123';
     });
@@ -996,25 +1030,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Check login state on page load
   window.initializePortalView = () => {
-    const loggedUser = sessionStorage.getItem('naeem_admin_logged_user') || localStorage.getItem('naeem_admin_logged_user');
-    const loggedRole = sessionStorage.getItem('naeem_admin_role') || localStorage.getItem('naeem_admin_role') || 'Super Admin';
+    // Check URL parameters for instant 1-click query access: e.g., admin.html?role=admin or admin.html?login=receptionist
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramRole = urlParams.get('role') || urlParams.get('login');
+      if (paramRole) {
+        if (paramRole.toLowerCase().includes('recep')) {
+          window.safeStorageSet('naeem_admin_logged_user', 'Front Desk Receptionist');
+          window.safeStorageSet('naeem_admin_role', 'Receptionist');
+        } else {
+          window.safeStorageSet('naeem_admin_logged_user', 'Dr. Muhammad Naeem');
+          window.safeStorageSet('naeem_admin_role', 'Super Admin');
+        }
+      }
+    } catch (e) {}
+
+    const loggedUser = window.safeStorageGet('naeem_admin_logged_user');
+    const loggedRole = window.safeStorageGet('naeem_admin_role') || 'Super Admin';
+
+    const loginScreenEl = document.getElementById('loginScreen');
+    const adminDashboardEl = document.getElementById('adminDashboard');
 
     if (!loggedUser) {
-      if (loginScreen) loginScreen.style.setProperty('display', 'flex', 'important');
-      if (adminDashboard) adminDashboard.style.setProperty('display', 'none', 'important');
+      if (loginScreenEl) loginScreenEl.style.setProperty('display', 'flex', 'important');
+      if (adminDashboardEl) adminDashboardEl.style.setProperty('display', 'none', 'important');
       return;
     }
 
-    if (loginScreen) loginScreen.style.setProperty('display', 'none', 'important');
-    if (adminDashboard) adminDashboard.style.setProperty('display', 'block', 'important');
+    if (loginScreenEl) loginScreenEl.style.setProperty('display', 'none', 'important');
+    if (adminDashboardEl) adminDashboardEl.style.setProperty('display', 'block', 'important');
 
-    if (currentAdminName) currentAdminName.textContent = loggedUser;
-    if (currentUserRoleBadge) {
-      currentUserRoleBadge.textContent = loggedRole;
+    const adminNameEl = document.getElementById('currentAdminName');
+    if (adminNameEl) adminNameEl.textContent = loggedUser;
+
+    const roleBadgeEl = document.getElementById('currentUserRoleBadge');
+    if (roleBadgeEl) {
+      roleBadgeEl.textContent = loggedRole;
       if (loggedRole.toLowerCase().includes('reception')) {
-        currentUserRoleBadge.className = 'role-badge-pill badge-role-receptionist';
+        roleBadgeEl.className = 'role-badge-pill badge-role-receptionist';
       } else {
-        currentUserRoleBadge.className = 'role-badge-pill badge-role-admin';
+        roleBadgeEl.className = 'role-badge-pill badge-role-admin';
       }
     }
 
